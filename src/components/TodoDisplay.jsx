@@ -1,27 +1,27 @@
-import { useState } from "react";
+import { useContext, useRef} from "react";
 import styles from './TodoItem.module.css';
-const TodoDisplay=(props)=>{
-  const [todoName,setTodoName] = useState("");
-  const [todoDate,setTodoDate] = useState("");
-   
-  const handleNameChange=(event)=>{
-    setTodoName(event.target.value);
-  }
+import { TodoContext } from "./store/todoContext";
+const TodoDisplay=()=>{
 
-  const handleDateChange=(event)=>{
-    setTodoDate(event.target.value);
-  }
+  const todoNameRef = useRef();
+  const todoDateRef = useRef();  
+  const {addNewItem} = useContext(TodoContext);
   return (
+    <form onSubmit={(event)=>{
+       event.preventDefault();
+      let todoName=todoNameRef.current.value;
+      let todoDate=todoDateRef.current.value;
+      todoNameRef.current.value="";
+      todoDateRef.current.value="";
+      addNewItem(todoName,todoDate);
+
+    }}>
     <div className={styles.input}>
-    <input type='text' placeholder='Enter Todo Here' className='text' value={todoName} onChange={handleNameChange}/>
-    <input type='Date' className='date'value={todoDate} onChange={handleDateChange}/>
-    <button type="button" className="btn btn-success" onClick={()=>{
-      props.handleTodos(todoName,todoDate);
-      setTodoName("");
-      setTodoDate("");
-     }
-    }>Add</button>
+    <input type='text' placeholder='Enter Todo Here' className='text' ref={todoNameRef} />
+    <input type='Date' className='date' ref={todoDateRef}/>
+    <button className="btn btn-success">Add </button>
   </div>  
+  </form>
   )
 }
 export default TodoDisplay;

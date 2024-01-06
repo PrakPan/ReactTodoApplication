@@ -1,6 +1,9 @@
+import { useContext } from "react";
+import { TodoContext } from "./store/todoContext";
+
 const WelcomeMessage=()=>{
- return (
- <center><h3>Welcome Buddy! </h3></center>
- )
+ const {todos} = useContext(TodoContext);
+ return   todos.length === 0 ? <center>Welcome Buddy! </center> : '';
+ 
 }
 export default WelcomeMessage;
